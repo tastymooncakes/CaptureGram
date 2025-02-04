@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const { email, password } = await request.json();
-  const MAX_AGE = 3600; // 1 hour
+  const MAX_AGE = 360000; // 1 hour
 
   try {
     const response = await fetch('https://dia-backend.numbersprotocol.io/api/v3/auth/token/login/', {
