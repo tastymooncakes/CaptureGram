@@ -1,25 +1,18 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Home, Search, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
-const FooterBar = ({
-  currentFilter,
-  setFilter,
-}: {
-  currentFilter: "public" | "following" | "store";
-  setFilter: (filter: "public" | "following" | "store") => void;
-}) => {
-  const pathname = usePathname(); // Get the current route
-  const router = useRouter(); // For navigation
+const FooterBar = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  
+  const currentFilter = searchParams.get("filter") || "following";
 
   const handleNavigation = (filter: "public" | "following") => {
-    if (pathname === "/store") {
-      router.push("/feed"); // Redirect to feed page
-    } else {
-      setFilter(filter);
-    }
+    router.push(`/feed?filter=${filter}`);
   };
 
   return (
@@ -32,6 +25,7 @@ const FooterBar = ({
       >
         <Home size={24} />
       </button>
+      
       <button
         className={`flex flex-col items-center ${
           currentFilter === "public" ? "text-white" : "text-gray-400"
@@ -42,9 +36,9 @@ const FooterBar = ({
       </button>
 
       <Link
-        href="/store"
+        href="/store?filter=store"
         className={`flex flex-col items-center ${
-          currentFilter === "store" ? "text-white" : "text-gray-400"
+          currentFilter === "store" || pathname === "/store" ? "text-white" : "text-gray-400"
         }`}
       >
         <ShoppingBag size={24} />

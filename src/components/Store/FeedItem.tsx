@@ -65,6 +65,7 @@ const FeedItem = ({ post }: FeedItemProps) => {
             src={post.user.avatar}
             alt={post.user.name}
             fill
+            sizes="(max-width: 768px) 100vw, 500px"
             className="rounded-full object-cover"
             onError={handleImageError}
           />

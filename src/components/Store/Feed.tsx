@@ -115,7 +115,7 @@ const Feed = () => {
         </>
       )}
       {/* Footer Bar */}
-      <FooterBar currentFilter={filter} setFilter={setFilter} />
+      <FooterBar />
     </div>
   );
 };
