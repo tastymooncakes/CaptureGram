@@ -15,7 +15,6 @@ const StoriesBar = () => {
       try {
         const { data } = await axios.get("/api/following");
         setFollowedUsers(data.results);
-        console.log(setFollowedUsers);
       } catch (err) {
         setError("Failed to load stories");
         console.error("Error fetching followed users:", err);

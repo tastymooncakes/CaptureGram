@@ -1,53 +1,47 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import FeedList from "./FeedList";
 import PostSkeleton from "./PostSkeleton";
 import { Post } from "./types";
-import StoriesBar from "../StoriesBar/StoriesBar";
 import FooterBar from "../Footer/Footer";
 
 const Feed = () => {
-  // State management
+  const searchParams = useSearchParams();
+  const filter = (searchParams.get("filter") as "public" | "following" | "store") || "following";
+  
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-  const [filter, setFilter] = useState<"public" | "following" | "store">("store");
-  const limit = 10; // Set your desired page size
+  const limit = 10;
 
-  // Fetch posts function
   const fetchPosts = useCallback(
-    async (currentOffset : number, isInitialLoad = false) => {
+    async (currentOffset: number, isInitialLoad = false) => {
       try {
         isInitialLoad ? setInitialLoading(true) : setIsLoadingMore(true);
         
-        const endpoint = "/api/products";
+        const endpoint = "/api/public-posts";
 
         const response = await axios.get(endpoint, {
-          params: {
-            limit: limit,
-            offset: currentOffset
-          }
+          params: { limit, offset: currentOffset },
         });
 
         const { results, pagination } = response.data;
 
         const transformedPosts = results.map((post: any): Post => ({
           id: post.id,
-          user: {
-            name: post.user.name,
-            avatar: post.user.avatar,
-          },
+          user: { name: post.user.name, avatar: post.user.avatar },
           imageUrl: post.imageUrl,
           caption: post.caption,
           likes: post.likes,
           comments: post.comments,
         }));
 
-        setPosts(prev => isInitialLoad ? transformedPosts : [...prev, ...transformedPosts]);
+        setPosts(prev => (isInitialLoad ? transformedPosts : [...prev, ...transformedPosts]));
         setHasMore(pagination.hasMore);
         setOffset(currentOffset + limit);
       } catch (error) {
@@ -59,16 +53,14 @@ const Feed = () => {
     [filter, limit]
   );
 
-  // Initial load and filter change handler
   useEffect(() => {
     setOffset(0);
     fetchPosts(0, true);
   }, [filter, fetchPosts]);
 
-  // Infinite scroll handler
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = 500; // pixels from bottom
+      const scrollThreshold = 500;
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       
       if (
@@ -77,7 +69,6 @@ const Feed = () => {
         !isLoadingMore &&
         !initialLoading
       ) {
-        // setPage(prev => prev + 1);
         fetchPosts(offset);
       }
     };
@@ -87,31 +78,17 @@ const Feed = () => {
   }, [hasMore, isLoadingMore, offset, initialLoading, fetchPosts]);
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      {filter === "following" && <StoriesBar />}
-      
-
-      {/* Content area */}
+    <div className="max-w-2xl mx-auto p-4">      
       {initialLoading ? (
         <div className="space-y-6">
           {Array(3).fill(0).map((_, i) => <PostSkeleton key={`skeleton-${i}`} />)}
         </div>
       ) : (
         <>
-          <FeedList 
-            posts={posts}
-            isLoading={initialLoading}
-            isLoadingMore={isLoadingMore}
-          />
-          
-          {!hasMore && !initialLoading && (
-            <p className="text-center text-gray-500 mt-6">
-              You've reached the end of the feed
-            </p>
-          )}
+          <FeedList posts={posts} isLoading={initialLoading} isLoadingMore={isLoadingMore} />
+          {!hasMore && !initialLoading && <p className="text-center text-gray-500 mt-6">You've reached the end of the feed</p>}
         </>
       )}
-      {/* Footer Bar */}
       <FooterBar />
     </div>
   );

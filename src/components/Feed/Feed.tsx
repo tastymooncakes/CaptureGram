@@ -25,16 +25,13 @@ const Feed = () => {
       try {
         isInitialLoad ? setInitialLoading(true) : setIsLoadingMore(true);
         
-        const endpoint = filter === "public" 
-          ? "/api/public-posts"
-          : "/api/following-posts";
+        const endpoint = "/api/following-posts";
 
         const response = await axios.get(endpoint, {
           params: { limit, offset: currentOffset },
         });
 
         const { results, pagination } = response.data;
-        console.log(results);
 
         const transformedPosts = results.map((post: any): Post => ({
           id: post.id,
