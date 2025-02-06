@@ -3,12 +3,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
-import FeedList from "./FeedList";
+import PublicFeedList from "./PublicFeedList";
 import PostSkeleton from "./PostSkeleton";
 import { Post } from "./types";
 import FooterBar from "../Footer/Footer";
 
-const Feed = () => {
+const PublicFeed = () => {
   const searchParams = useSearchParams();
   const filter = (searchParams.get("filter") as "public" | "following" | "store") || "following";
   
@@ -85,7 +85,7 @@ const Feed = () => {
         </div>
       ) : (
         <>
-          <FeedList posts={posts} isLoading={initialLoading} isLoadingMore={isLoadingMore} />
+          <PublicFeedList posts={posts} isLoading={initialLoading} isLoadingMore={isLoadingMore} />
           {!hasMore && !initialLoading && <p className="text-center text-gray-500 mt-6">You've reached the end of the feed</p>}
         </>
       )}
@@ -94,4 +94,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default PublicFeed;

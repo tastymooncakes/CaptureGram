@@ -1,5 +1,5 @@
-import Feed from "@/components/PublicFeed/Feed"; // Ensure the path is correct
+import PublicFeed from "@/components/PublicFeed/PublicFeed"; // Ensure the path is correct
 
 export default function FeedPage() {
-  return <Feed />;
+  return <PublicFeed />;
 }

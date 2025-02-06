@@ -45,11 +45,11 @@ import { Post } from "./types";
 </div>
 */
 
-interface FeedItemProps {
+interface PublicFeedItemProps {
   post: Post;
 }
 
-const FeedItem = ({ post }: FeedItemProps) => {
+const PublicFeedItem = ({ post }: PublicFeedItemProps) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const target = e.target as HTMLImageElement;
     target.src = "/placeholder.jpg";
@@ -94,4 +94,4 @@ const FeedItem = ({ post }: FeedItemProps) => {
   );
 };
 
-export default FeedItem;
+export default PublicFeedItem;

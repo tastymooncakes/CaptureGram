@@ -1,16 +1,16 @@
 "use client";
 
 import { Post } from "./types";
-import FeedItem from "./FeedItem";
+import PublicFeedItem from "./PublicFeedItem";
 import PostSkeleton from "./PostSkeleton";
 
-interface FeedListProps {
+interface PublicFeedListProps {
   posts: Post[];
   isLoading: boolean;
   isLoadingMore: boolean;
 }
 
-const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
+const PublicFeedList = ({ posts, isLoading, isLoadingMore }: PublicFeedListProps) => {
   return (
     <div className="space-y-6">
       {/* Initial loading state */}
@@ -22,7 +22,7 @@ const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
         <>
           {/* Rendered posts */}
           {posts.map((post) => (
-            <FeedItem key={post.id} post={post} />
+            <PublicFeedItem key={post.id} post={post} />
           ))}
 
           {/* Loading more indicator */}
@@ -33,4 +33,4 @@ const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
   );
 };
 
-export default FeedList;
+export default PublicFeedList;

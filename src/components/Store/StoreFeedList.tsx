@@ -1,7 +1,7 @@
 "use client";
 
 import { Post } from "./types";
-import FeedItem from "./FeedItem";
+import StoreFeedItem from "./StoreFeedItem";
 import PostSkeleton from "./PostSkeleton";
 
 interface FeedListProps {
@@ -10,7 +10,7 @@ interface FeedListProps {
   isLoadingMore: boolean;
 }
 
-const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
+const StoreFeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
   return (
     <div className="space-y-6">
       {/* Initial loading state */}
@@ -22,7 +22,7 @@ const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
         <>
           {/* Rendered posts */}
           {posts.map((post) => (
-            <FeedItem key={post.id} post={post} />
+            <StoreFeedItem key={post.id} post={post} />
           ))}
 
           {/* Loading more indicator */}
@@ -33,4 +33,4 @@ const FeedList = ({ posts, isLoading, isLoadingMore }: FeedListProps) => {
   );
 };
 
-export default FeedList;
+export default StoreFeedList;

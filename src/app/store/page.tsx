@@ -1,5 +1,5 @@
-import Feed from "@/components/Store/Feed"; // Ensure the path is correct
+import StoreFeed from "@/components/Store/StoreFeed"; // Ensure the path is correct
 
 export default function FeedPage() {
-  return <Feed />;
+  return <StoreFeed />;
 }
