@@ -1,18 +1,18 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import FeedList from "./FeedList";
-import PostSkeleton from "./PostSkeleton";
 import { Post } from "./types";
 import StoriesBar from "../StoriesBar/StoriesBar";
 import FooterBar from "../Footer/Footer";
+import { usePathname } from "next/navigation"; // Use usePathname from next/navigation
 
-const Feed = () => {
-  const searchParams = useSearchParams();
-  const filter = (searchParams.get("filter") as "public" | "following" | "store") || "following";
-  
+type FeedProps = {
+  endpoint: string;
+};
+
+const Feed = ({ endpoint }: FeedProps) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
@@ -20,13 +20,13 @@ const Feed = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const limit = 10;
 
+  const pathname = usePathname();
+
   const fetchPosts = useCallback(
     async (currentOffset: number, isInitialLoad = false) => {
       try {
         isInitialLoad ? setInitialLoading(true) : setIsLoadingMore(true);
         
-        const endpoint = "/api/following-posts";
-
         const response = await axios.get(endpoint, {
           params: { limit, offset: currentOffset },
         });
@@ -51,13 +51,13 @@ const Feed = () => {
         isInitialLoad ? setInitialLoading(false) : setIsLoadingMore(false);
       }
     },
-    [filter, limit]
+    [limit]
   );
 
   useEffect(() => {
     setOffset(0);
     fetchPosts(0, true);
-  }, [filter, fetchPosts]);
+  }, [fetchPosts]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,18 +80,12 @@ const Feed = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      {filter === "following" && <StoriesBar />}
-      
-      {initialLoading ? (
-        <div className="space-y-6">
-          {Array(3).fill(0).map((_, i) => <PostSkeleton key={`skeleton-${i}`} />)}
-        </div>
-      ) : (
+      {pathname === "/feed" && <StoriesBar />}
         <>
           <FeedList posts={posts} isLoading={initialLoading} isLoadingMore={isLoadingMore} />
           {!hasMore && !initialLoading && <p className="text-center text-gray-500 mt-6">You've reached the end of the feed</p>}
         </>
-      )}
+ 
       <FooterBar />
     </div>
   );

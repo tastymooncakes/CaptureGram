@@ -1,5 +1,5 @@
-import PublicFeed from "@/components/PublicFeed/PublicFeed"; // Ensure the path is correct
+import Feed from "@/components/Feed/Feed"; // Ensure the path is correct
 
 export default function FeedPage() {
-  return <PublicFeed />;
+  return <Feed endpoint="/api/public-posts" />;
 }

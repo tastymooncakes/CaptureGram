@@ -1,5 +1,5 @@
-import StoreFeed from "@/components/Store/StoreFeed"; // Ensure the path is correct
+import Feed from "@/components/Feed/Feed"; // Ensure the path is correct
 
 export default function FeedPage() {
-  return <StoreFeed />;
+  return <Feed endpoint="/api/products" />;
 }
