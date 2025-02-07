@@ -12,7 +12,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const setProfile = useUserStore((state) => state.setProfile);
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,8 +29,13 @@ const LoginForm = () => {
       if (response.data.user) {
         // Assuming `response.data.user.profilePicture` contains the profile picture URL
         const profilePicture = response.data.user.profile_picture_thumbnail;
-        console.log(profilePicture);
-        setProfile(profilePicture); // Store the profile picture in Zustand store
+        const displayName = response.data.user.display_name;
+        const description = response.data.user.description;
+        setUser({
+          displayName: displayName,
+          profilePicture: profilePicture,
+          description: description
+        }); // Store the profile picture in Zustand store
 
         // Redirect the user to the feed page
         router.push('/feed');
