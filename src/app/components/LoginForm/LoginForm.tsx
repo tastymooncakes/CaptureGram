@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import styles from './LoginForm.module.css'; // Import the CSS module
+import { useUserStore } from '../../localStorage/userStore'; // Import Zustand store
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const setProfile = useUserStore((state) => state.setProfile);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,8 +20,23 @@ const LoginForm = () => {
     setError(null);
 
     try {
+      // Step 1: Send login request
       const response = await axios.post('/api/auth/login', { email, password });
-      router.push('/feed');
+
+      console.log(response.data)
+      
+      // Step 2: If login is successful, get the user profile
+      if (response.data.user) {
+        // Assuming `response.data.user.profilePicture` contains the profile picture URL
+        const profilePicture = response.data.user.profile_picture_thumbnail;
+        console.log(profilePicture);
+        setProfile(profilePicture); // Store the profile picture in Zustand store
+
+        // Redirect the user to the feed page
+        router.push('/feed');
+      } else {
+        setError('Failed to fetch user profile.');
+      }
     } catch (error) {
       setError('Invalid credentials. Please try again.');
     } finally {

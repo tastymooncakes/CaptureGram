@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm/LoginForm'; // Use the import alias
+import LoginForm from '@/app/components/LoginForm/LoginForm'; // Use the import alias
 
 export default function Home() {
   return (

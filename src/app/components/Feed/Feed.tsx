@@ -5,7 +5,6 @@ import axios from "axios";
 import FeedList from "./FeedList";
 import { Post } from "./types";
 import StoriesBar from "../StoriesBar/StoriesBar";
-import FooterBar from "../Footer/Footer";
 import { usePathname } from "next/navigation"; // Use usePathname from next/navigation
 
 type FeedProps = {
@@ -85,9 +84,7 @@ const Feed = ({ endpoint }: FeedProps) => {
           <FeedList posts={posts} isLoading={initialLoading} isLoadingMore={isLoadingMore} />
           {!hasMore && !initialLoading && <p className="text-center text-gray-500 mt-6">You've reached the end of the feed</p>}
         </>
- 
-      <FooterBar />
-    </div>
+     </div>
   );
 };
 
