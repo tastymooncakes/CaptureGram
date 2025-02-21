@@ -8,7 +8,7 @@ import { useUserStore } from "../../localStorage/userStore"; // Import Zustand s
 
 const FooterBar = () => {
   const pathname = usePathname();
-  const { profilePicture } = useUserStore();
+  const { username, profilePicture } = useUserStore();
 
   return (
     <div className="fixed bottom-0 left-0 w-full bg-black border-t border-gray-700 flex justify-around p-2">
@@ -24,7 +24,11 @@ const FooterBar = () => {
         <ShoppingBag size={24} />
       </Link>
 
-      <Link href="/user-profile" className={`flex flex-col items-center ${pathname === "/user-profile" ? "text-white" : "text-gray-400"}`}>
+      {/* Dynamic profile route: Navigates to /<username> */}
+      <Link
+        href={`/${username || "user-profile"}`} // Fallback if username is not set
+        className={`flex flex-col items-center ${pathname === `/${username}` ? "text-white" : "text-gray-400"}`}
+      >
         {profilePicture ? (
           <img src={profilePicture} alt="User Profile" className="w-6 h-6 rounded-full" />
         ) : (

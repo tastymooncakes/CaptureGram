@@ -32,7 +32,7 @@ const LoginForm = () => {
         const displayName = response.data.user.display_name;
         const description = response.data.user.description;
         setUser({
-          displayName: displayName,
+          username: displayName,
           profilePicture: profilePicture,
           description: description
         }); // Store the profile picture in Zustand store

@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 // Define the user state interface
 interface UserState {
   profilePicture: string | null;
-  displayName: string | null;
+  username: string | null;
   description: string | null;
   followCount: number;
   followingCount: number;
@@ -16,14 +16,14 @@ interface UserState {
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      displayName: null,
+      username: null,
       followCount: 0,
       followingCount: 0,
       profilePicture: null,
       description: null,
       setUser: (user) => set((state) => ({ ...state, ...user })),
       clearUser: () => set({
-        displayName: null,
+        username: null,
         followCount: 0,
         followingCount: 0,
         profilePicture: null,
